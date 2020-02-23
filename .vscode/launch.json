@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "type": "ghc",
+            "request": "launch",
+            "name": "haskell-debug-adapter",
+            "internalConsoleOptions": "openOnSessionStart",
+            "workspace": "${workspaceRoot}",
+            "startup": "${workspaceRoot}/app/Main.hs",
+            "startupFunc": "main",
+            "startupArgs": "",
+            "stopOnEntry": false,
+            "mainArgs": "",
+            "ghciPrompt": "H>>= ",
+            "ghciInitialPrompt": "Prelude>",
+            "ghciCmd": "stack ghci --no-nix-pure --test --no-load --no-build --main-is TARGET --ghci-options -fprint-evld-with-show",
+            "ghciEnv": {},
+            "logFile": "${workspaceRoot}/.trash/phoityne.log",
+            "logLevel": "WARNING",
+            "forceInspect": false
+        }
+    ]
+}

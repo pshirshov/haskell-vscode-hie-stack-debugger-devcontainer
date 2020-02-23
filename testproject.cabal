@@ -1,0 +1,62 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: db23c8566674651af8a31a5f642a4140c3b657ab8ebad430673a09527f4414c5
+
+name:           testproject
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/pshirshov/testproject#readme>
+homepage:       https://github.com/pshirshov/testproject#readme
+bug-reports:    https://github.com/pshirshov/testproject/issues
+author:         Pavel Shirshov
+maintainer:     pshirshov@gmail.com
+copyright:      2020 Pavel Shirshov
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/pshirshov/testproject
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_testproject
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable testproject-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_testproject
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , testproject
+  default-language: Haskell2010
+
+test-suite testproject-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_testproject
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , testproject
+  default-language: Haskell2010

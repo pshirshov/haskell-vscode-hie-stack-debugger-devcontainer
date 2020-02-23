@@ -1,0 +1,32 @@
+.trash
+
+# Created by https://www.gitignore.io/api/haskell,stack
+# Edit at https://www.gitignore.io/?templates=haskell,stack
+
+### Haskell ###
+dist
+dist-*
+cabal-dev
+*.o
+*.hi
+*.chi
+*.chs.h
+*.dyn_o
+*.dyn_hi
+.hpc
+.hsenv
+.cabal-sandbox/
+cabal.sandbox.config
+*.prof
+*.aux
+*.hp
+*.eventlog
+.stack-work/
+cabal.project.local
+cabal.project.local~
+.HTF/
+.ghc.environment.*
+
+#!! ERROR: stack is undefined. Use list command to see defined gitignore types !!#
+
+# End of https://www.gitignore.io/api/haskell,stack
