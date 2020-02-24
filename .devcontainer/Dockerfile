@@ -1,6 +1,7 @@
 FROM alpine
 
-# && nix-env -i ghc-8.6.5 \
+ARG HIE_REVISION=85fd0be92443ca60bb649f8e7748f785fe870b7a
+ARG GHC_VERSION=ghc865
 
 ARG USERNAME=vscode
 ARG USER_UID=1000
@@ -17,7 +18,7 @@ RUN apk update \
     && rm /tmp/common-setup.sh
 
 RUN usermod -a -G wheel ${USERNAME}
-RUN echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/wheel
 
 # Enable HTTPS support in wget and set nsswitch.conf to make resolution work within containers
 RUN apk add --no-cache --update openssl \
@@ -50,28 +51,26 @@ ENV \
 
 RUN echo ". ${NIXPROF}/etc/profile.d/nix.sh" >> ~/.profile \
     && echo ". ${NIXPROF}/etc/profile.d/nix.sh" >> ~/.zshrc \
+    && nix-channel --add https://nixos.org/channels/nixpkgs-unstable \
     # Make sure the channel is gcrooted, because otherwise it wouldn't be kept with keep-derivations turned off
-    && nix-channel --update \
-    && nix-collect-garbage --delete-old \
-    && nix-store --optimise \
-    && nix-store --verify --check-contents
+    && nix-channel --update
 
 ENTRYPOINT ["/bin/zsh"]
 
 COPY --chown=${USERNAME}:${USERNAME} stack-config.yaml /home/${USERNAME}/.stack/config.yaml
 COPY --chown=${USERNAME}:${USERNAME} stack-global-config.yaml /home/${USERNAME}/.stack/global-project/stack.yaml
 
-RUN nix-env -i stack
-RUN nix-env -i ghc-8.6.5
+RUN nix-env -i stack ghc-8.6.5 cabal-install
 
 RUN nix-env -iA cachix -f https://cachix.org/api/v1/install  \
     && cachix use all-hies \
     && nix-env -iA \
     unstableFallback.selection \
-    --arg selector 'p: { inherit (p) ghc865; }' \
-    -f "https://github.com/infinisil/all-hies/tarball/85fd0be92443ca60bb649f8e7748f785fe870b7a"
+    --arg selector "p: { inherit (p) ${GHC_VERSION}; }" \
+    -f https://github.com/infinisil/all-hies/tarball/${HIE_REVISION}
 
-RUN stack install haskell-dap ghci-dap haskell-debug-adapter
+RUN stack install haskell-dap ghci-dap haskell-debug-adapter \
+    && stack install stylish-haskell
 
 RUN nix-collect-garbage --delete-old \
     && nix-store --optimise \
